@@ -11,6 +11,8 @@ const io = new Server(server, {
 let waitingPlayer = null;
 
 io.on('connection', (socket) => {
+  console.log("io.on('connection'");
+  console.log(socket.id);
   if (!waitingPlayer) {
     waitingPlayer = socket;
     socket.emit('waiting', 'En attente d\'un adversaire...');
@@ -28,10 +30,15 @@ io.on('connection', (socket) => {
 
   socket.on('makeMove', (data) => {
     // Transmet le coup joué à l'adversaire
+    console.log("socket.on('makeMove',");
+    console.log(socket.id);
+    console.log(data);
     socket.to(data.room).emit('moveMade', data);
   });
 
   socket.on('disconnect', () => {
+    console.log("socket.on('disconnect',");
+    console.log(socket.id);
     if (waitingPlayer === socket) waitingPlayer = null;
   });
 });
